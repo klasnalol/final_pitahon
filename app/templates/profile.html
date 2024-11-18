@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container">
+        <h2>{{ user.username }}'s Profile</h2>
+        
+        <!-- Display current profile picture -->
+        <img src="{{ url_for('static', filename='profile_pics/' + user.image_file) }}" alt="Profile Picture" class="img-thumbnail" width="150">
+
+        <!-- Form to upload a new profile picture -->
+        <form action="{{ url_for('main.profile', username=user.username) }}" method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="picture">Update Profile Picture</label>
+                <input type="file" name="picture" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-primary">Update</button>
+        </form>
+
+        <hr>
+
+        <h3>Posts</h3>
+        <ul class="list-group">
+            {% for post in posts %}
+                <li class="list-group-item">
+                    <h4>{{ post.title }}</h4>
+                    <p>{{ post.content }}</p>
+                    <p>Posted on {{ post.date_posted }}</p>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}

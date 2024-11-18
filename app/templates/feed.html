@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2 class="mb-4">Feed</h2>
+    {% for post in posts %}
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="d-flex align-items-center">
+                <!-- Display the author's profile picture -->
+                <img src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}" 
+                     alt="Profile Picture" class="img-thumbnail" width="50" height="50">
+                 
+                <div class="ml-3">
+                    <h5 class="card-title">{{ post.title }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">
+                        by <a href="{{ url_for('main.profile', username=post.author.username) }}">{{ post.author.username }}</a>
+                        on {{ post.date_posted.strftime('%Y-%m-%d %H:%M:%S') }}
+                    </h6>
+                </div>
+            </div>
+            
+            <p class="card-text">{{ post.content }}</p>
+            
+            {% if post.media_file %}
+                {% if post.media_file.endswith('mp4') %}
+                    <video controls width="100%">
+                        <source src="{{ url_for('static', filename='post_media/' ~ post.media_file) }}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                {% else %}
+                    <img src="{{ url_for('static', filename='post_media/' ~ post.media_file) }}" alt="Post media" class="img-fluid">
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
